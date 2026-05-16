@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  macOS launchd agent — triggers run.sh whenever iCloud delivers a new export.zip.
+
+  Install:
+    1. Edit the two PLACEHOLDER paths below.
+    2. cp com.healthanalyzer.watcher.plist ~/Library/LaunchAgents/
+    3. launchctl load ~/Library/LaunchAgents/com.healthanalyzer.watcher.plist
+
+  Uninstall:
+    launchctl unload ~/Library/LaunchAgents/com.healthanalyzer.watcher.plist
+    rm ~/Library/LaunchAgents/com.healthanalyzer.watcher.plist
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.healthanalyzer.watcher</string>
+
+    <!-- Path to run.sh — replace PLACEHOLDER with your actual home directory -->
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>/PLACEHOLDER/path/to/apple_health_analyzer/run.sh</string>
+        <string>1</string>  <!-- days argument -->
+    </array>
+
+    <!-- Watch the iCloud folder where the iOS Shortcut saves export.zip -->
+    <key>WatchPaths</key>
+    <array>
+        <string>/PLACEHOLDER/Users/YOUR_USERNAME/Library/Mobile Documents/com~apple~CloudDocs/HealthExports</string>
+    </array>
+
+    <!-- Log output -->
+    <key>StandardOutPath</key>
+    <string>/tmp/healthanalyzer.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/healthanalyzer.err</string>
+
+    <key>RunAtLoad</key>
+    <false/>
+</dict>
+</plist>
